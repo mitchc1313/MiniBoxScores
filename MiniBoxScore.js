@@ -1279,7 +1279,7 @@ else
                 a += '</tr>';
         
                 // Clock row with both IDs
-                a += '<tr class="fid-' + roadId + ' fid-' + homeId + '">';
+                a += "   <tr>";
                 a += '<td colspan="5" class="MFLLiveClock" style="position:relative" id="mflBoxClock_' + roadId + '_' + homeId + '"></td>';
                 if (mflBoxCheckLive()) {
                     a += '<td class="MFLExtras MFLExtrasPMR MFLExtras_' + roadId + '_' + homeId + '" title="Player Minutes Remaining">PMR</td>';
