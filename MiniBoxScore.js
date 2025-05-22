@@ -1078,10 +1078,34 @@ else
         }))
     }
 
-    function getMFLBoxNameIcon(e)
-    {
-        return "BYE" === e ? '<span class="mflBoxBye">BYE</span>' : "AVG" === e ? '<span class="mflBoxAvg">AVG</span>' : mflBoxUseAbbrev && "" !== franchiseDatabase["fid_" + e].abbrev && "" !== mflBoxIconBase && "" !== mflBoxIconExt ? '<img src="' + mflBoxIconBase + e + "." + mflBoxIconExt + '" title="' + franchiseDatabase["fid_" + e].name + '" style="vertical-align:middle" /> <span style="vertical-align:middle">' + franchiseDatabase["fid_" + e].abbrev + "</span>" : mflBoxUseAbbrev && "" !== franchiseDatabase["fid_" + e].abbrev && mflBoxUseIcon && "" !== franchiseDatabase["fid_" + e].icon ? '<img src="' + franchiseDatabase["fid_" + e].icon + '" title="' + franchiseDatabase["fid_" + e].name + '" style="vertical-align:middle" /> <span style="vertical-align:middle">' + franchiseDatabase["fid_" + e].abbrev + "</span>" : mflBoxUseAbbrev && "" !== franchiseDatabase["fid_" + e].abbrev && mflBoxUseLogo && "" !== franchiseDatabase["fid_" + e].logo ? '<img src="' + franchiseDatabase["fid_" + e].logo + '" title="' + franchiseDatabase["fid_" + e].name + '" style="vertical-align:middle" /> <span style="vertical-align:middle">' + franchiseDatabase["fid_" + e].abbrev + "</span>" : "" !== mflBoxIconBase && "" !== mflBoxIconExt ? '<img src="' + mflBoxIconBase + e + "." + mflBoxIconExt + '" title="' + franchiseDatabase["fid_" + e].name + '" />' : mflBoxUseIcon && "" !== franchiseDatabase["fid_" + e].icon ? '<img src="' + franchiseDatabase["fid_" + e].icon + '" title="' + franchiseDatabase["fid_" + e].name + '" />' : mflBoxUseLogo && "" !== franchiseDatabase["fid_" + e].logo ? '<img src="' + franchiseDatabase["fid_" + e].logo + '" title="' + franchiseDatabase["fid_" + e].name + '" />' : mflBoxUseAbbrev && "" !== franchiseDatabase["fid_" + e].abbrev ? '<span title="' + franchiseDatabase["fid_" + e].name + '">' + franchiseDatabase["fid_" + e].abbrev + "</span>" : franchiseDatabase["fid_" + e].name
+function getMFLBoxNameIcon(e) {
+    if (e === "BYE") return '<span class="mflBoxBye">BYE</span>';
+    if (e === "AVG") return '<span class="mflBoxAvg">AVG</span>';
+
+    let content = "";
+
+    if (mflBoxUseAbbrev && franchiseDatabase["fid_" + e].abbrev && mflBoxIconBase && mflBoxIconExt) {
+        content = '<img src="' + mflBoxIconBase + e + "." + mflBoxIconExt + '" title="' + franchiseDatabase["fid_" + e].name + '" style="vertical-align:middle" /> <span style="vertical-align:middle">' + franchiseDatabase["fid_" + e].abbrev + "</span>";
+    } else if (mflBoxUseAbbrev && franchiseDatabase["fid_" + e].abbrev && mflBoxUseIcon && franchiseDatabase["fid_" + e].icon) {
+        content = '<img src="' + franchiseDatabase["fid_" + e].icon + '" title="' + franchiseDatabase["fid_" + e].name + '" style="vertical-align:middle" /> <span style="vertical-align:middle">' + franchiseDatabase["fid_" + e].abbrev + "</span>";
+    } else if (mflBoxUseAbbrev && franchiseDatabase["fid_" + e].abbrev && mflBoxUseLogo && franchiseDatabase["fid_" + e].logo) {
+        content = '<img src="' + franchiseDatabase["fid_" + e].logo + '" title="' + franchiseDatabase["fid_" + e].name + '" style="vertical-align:middle" /> <span style="vertical-align:middle">' + franchiseDatabase["fid_" + e].abbrev + "</span>";
+    } else if (mflBoxIconBase && mflBoxIconExt) {
+        content = '<img src="' + mflBoxIconBase + e + "." + mflBoxIconExt + '" title="' + franchiseDatabase["fid_" + e].name + '" />';
+    } else if (mflBoxUseIcon && franchiseDatabase["fid_" + e].icon) {
+        content = '<img src="' + franchiseDatabase["fid_" + e].icon + '" title="' + franchiseDatabase["fid_" + e].name + '" />';
+    } else if (mflBoxUseLogo && franchiseDatabase["fid_" + e].logo) {
+        content = '<img src="' + franchiseDatabase["fid_" + e].logo + '" title="' + franchiseDatabase["fid_" + e].name + '" />';
+    } else if (mflBoxUseAbbrev && franchiseDatabase["fid_" + e].abbrev) {
+        content = '<span title="' + franchiseDatabase["fid_" + e].name + '">' + franchiseDatabase["fid_" + e].abbrev + "</span>";
+    } else {
+        content = franchiseDatabase["fid_" + e].name;
     }
+
+    // ✅ Wrap in a container for styling or overflow handling
+    return '<div class="logo-overflow-wrapper">' + content + '</div>';
+}
+
 
     function getMFLBoxNFLIcon(e)
     {
