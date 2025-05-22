@@ -1078,33 +1078,40 @@ else
         }))
     }
 
-function getMFLBoxNameIcon(e) {
-    if (e === "BYE") return '<span class="mflBoxBye">BYE</span>';
-    if (e === "AVG") return '<span class="mflBoxAvg">AVG</span>';
-
-    let content = "";
-
-    if (mflBoxUseAbbrev && franchiseDatabase["fid_" + e].abbrev && mflBoxIconBase && mflBoxIconExt) {
-        content = '<img src="' + mflBoxIconBase + e + "." + mflBoxIconExt + '" title="' + franchiseDatabase["fid_" + e].name + '" style="vertical-align:middle" /> <span style="vertical-align:middle">' + franchiseDatabase["fid_" + e].abbrev + "</span>";
-    } else if (mflBoxUseAbbrev && franchiseDatabase["fid_" + e].abbrev && mflBoxUseIcon && franchiseDatabase["fid_" + e].icon) {
-        content = '<img src="' + franchiseDatabase["fid_" + e].icon + '" title="' + franchiseDatabase["fid_" + e].name + '" style="vertical-align:middle" /> <span style="vertical-align:middle">' + franchiseDatabase["fid_" + e].abbrev + "</span>";
-    } else if (mflBoxUseAbbrev && franchiseDatabase["fid_" + e].abbrev && mflBoxUseLogo && franchiseDatabase["fid_" + e].logo) {
-        content = '<img src="' + franchiseDatabase["fid_" + e].logo + '" title="' + franchiseDatabase["fid_" + e].name + '" style="vertical-align:middle" /> <span style="vertical-align:middle">' + franchiseDatabase["fid_" + e].abbrev + "</span>";
-    } else if (mflBoxIconBase && mflBoxIconExt) {
-        content = '<img src="' + mflBoxIconBase + e + "." + mflBoxIconExt + '" title="' + franchiseDatabase["fid_" + e].name + '" />';
-    } else if (mflBoxUseIcon && franchiseDatabase["fid_" + e].icon) {
-        content = '<img src="' + franchiseDatabase["fid_" + e].icon + '" title="' + franchiseDatabase["fid_" + e].name + '" />';
-    } else if (mflBoxUseLogo && franchiseDatabase["fid_" + e].logo) {
-        content = '<img src="' + franchiseDatabase["fid_" + e].logo + '" title="' + franchiseDatabase["fid_" + e].name + '" />';
-    } else if (mflBoxUseAbbrev && franchiseDatabase["fid_" + e].abbrev) {
-        content = '<span title="' + franchiseDatabase["fid_" + e].name + '">' + franchiseDatabase["fid_" + e].abbrev + "</span>";
-    } else {
-        content = franchiseDatabase["fid_" + e].name;
+    function getMFLBoxNameIcon(e) {
+      const fid = "fid_" + e;
+      const team = franchiseDatabase[fid];
+    
+      if (e === "BYE") {
+        return '<span class="mflBoxBye">BYE</span>';
+      }
+      if (e === "AVG") {
+        return '<span class="mflBoxAvg">AVG</span>';
+      }
+    
+      let imgHTML = "";
+      if (mflBoxUseAbbrev && team.abbrev && mflBoxIconBase && mflBoxIconExt) {
+        imgHTML = `<div class="logo-overflow-wrapper"><img src="${mflBoxIconBase + e}.${mflBoxIconExt}" title="${team.name}" style="vertical-align:middle" /></div>`;
+      } else if (mflBoxUseAbbrev && team.abbrev && mflBoxUseIcon && team.icon) {
+        imgHTML = `<div class="logo-overflow-wrapper"><img src="${team.icon}" title="${team.name}" style="vertical-align:middle" /></div>`;
+      } else if (mflBoxUseAbbrev && team.abbrev && mflBoxUseLogo && team.logo) {
+        imgHTML = `<div class="logo-overflow-wrapper"><img src="${team.logo}" title="${team.name}" style="vertical-align:middle" /></div>`;
+      } else if (mflBoxIconBase && mflBoxIconExt) {
+        imgHTML = `<div class="logo-overflow-wrapper"><img src="${mflBoxIconBase + e}.${mflBoxIconExt}" title="${team.name}" /></div>`;
+      } else if (mflBoxUseIcon && team.icon) {
+        imgHTML = `<div class="logo-overflow-wrapper"><img src="${team.icon}" title="${team.name}" /></div>`;
+      } else if (mflBoxUseLogo && team.logo) {
+        imgHTML = `<div class="logo-overflow-wrapper"><img src="${team.logo}" title="${team.name}" /></div>`;
+      }
+    
+      // Keep span outside wrapper
+      const abbrevHTML = mflBoxUseAbbrev && team.abbrev
+        ? `<span style="vertical-align:middle">${team.abbrev}</span>`
+        : team.name;
+    
+      return imgHTML + " " + abbrevHTML;
     }
 
-    // ✅ Wrap in a container for styling or overflow handling
-    return '<div class="logo-overflow-wrapper">' + content + '</div>';
-}
 
 
     function getMFLBoxNFLIcon(e)
