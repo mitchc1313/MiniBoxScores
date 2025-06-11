@@ -1316,16 +1316,7 @@ else
                 if (mflBoxActiveWeek <= completedWeek || mflBoxActiveWeek === liveScoringWeek) {
                     a += '<tr class="MFLBoxPlayerDetailsTR fid-' + homeId + '" onclick="doMFLBoxPlayerDetails(\'' + homeId + '\',' + o + ')">';
                 } else {
-                    a += '<tr class="fid-' + homeId + '">';
-
-                const fidKey = "fid_" + homeId;
-                    
-                const stadiumName = franchiseStadiums[fidKey] || ""; // fallback
-                
-                a += `<tr class="MFLBoxStadiumRow"><td colspan="5" class="home-stadium-name" style="font-style: italic; font-size: 0.75rem; text-align: center">${stadiumName}</td></tr>`;
-
-                    
-        
+                    a += '<tr class="fid-' + homeId + '">';        
                 }
                 a += '<td class="MFLLiveTeam">' + getMFLBoxNameIcon(homeId) + "</td>";
                 a += '<td class="MFLPaceSpread" id="mflBoxSpread_' + homeId + '_' + o + '"></td>';
@@ -1340,6 +1331,10 @@ else
                 a += '</tr>';
 
                 const fidKey = "fid_" + homeId;
+                    
+                const stadiumName = franchiseStadiums[fidKey] || ""; // fallback
+                
+                a += `<tr class="MFLBoxStadiumRow"><td colspan="5" class="home-stadium-name" style="font-style: italic; font-size: 0.75rem; text-align: center">${stadiumName}</td></tr>`;
                        
                 // Clock row with both IDs
                 a += "   <tr>";
