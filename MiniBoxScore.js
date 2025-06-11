@@ -59,20 +59,6 @@ else
         mflBoxNflGameStatus = new Array,
         ls_last_update_secs = 0;
 
-
-    let franchiseStadiums = {};
-
-        async function fetchStadiumData() {
-          const response = await fetch(`${baseURLDynamic}/${year}/export?TYPE=league&L=${league_id}&JSON=1`);
-          const data = await response.json();
-        
-          data.league.franchises.franchise.forEach(f => {
-            const fidKey = `fid_${f.id}`;
-            franchiseStadiums[fidKey] = f.stadium || "Home Stadium"; // fallback if undefined
-          });
-        }
-
-
     function doMFLBoxFantasyWeek()
     {
         if(mflBoxJSON_matchups = [], mflBoxActiveWeek === mflBoxCurrentWeek)
@@ -381,7 +367,6 @@ else
                     for(m = 0; m < mflBoxJSON_matchups.franchise[l].players.player.length; m++)
                     {
                         s = mflBoxJSON_matchups.franchise[l];
-                        
                         if("starter" === (c = mflBoxJSON_matchups.franchise[l].players.player[m]).status) f = "1";
                         else f = "0";
                         if(void 0 === mflBox_players["pid_" + c.id] ? (mflBox_players["pid_" + c.id] = {
@@ -1316,7 +1301,7 @@ else
                 if (mflBoxActiveWeek <= completedWeek || mflBoxActiveWeek === liveScoringWeek) {
                     a += '<tr class="MFLBoxPlayerDetailsTR fid-' + homeId + '" onclick="doMFLBoxPlayerDetails(\'' + homeId + '\',' + o + ')">';
                 } else {
-                    a += '<tr class="fid-' + homeId + '">';        
+                    a += '<tr class="fid-' + homeId + '">';
                 }
                 a += '<td class="MFLLiveTeam">' + getMFLBoxNameIcon(homeId) + "</td>";
                 a += '<td class="MFLPaceSpread" id="mflBoxSpread_' + homeId + '_' + o + '"></td>';
@@ -1329,14 +1314,7 @@ else
                     a += '<td class="MFLExtras MFLExtrasCP MFLExtras_' + roadId + '_' + homeId + '" id="mflBoxCP_' + homeId + '_' + o + '"></td>';
                 }
                 a += '</tr>';
-
-                const fidKey = `fid_${homeFid}`; // Make sure homeFid is defined
-const homeStadium = franchiseStadiums[fidKey];
-
-a += `<tr class="MFLStadiumRow"><td colspan="5" class="MFLLiveStadium" style="text-align:center; font-style:italic;">${
-  homeStadium || 'Stadium TBD'
-}</td></tr>`;
-
+        
                 // Clock row with both IDs
                 a += "   <tr>";
                 a += '<td colspan="5" class="MFLLiveClock" style="position:relative" id="mflBoxClock_' + roadId + '_' + homeId + '"></td>';
