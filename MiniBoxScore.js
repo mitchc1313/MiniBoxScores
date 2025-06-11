@@ -61,7 +61,7 @@ else
 
 
 const leagueAPIUrl = `${baseURLDynamic}/${year}/export?TYPE=league&L=${league_id}&JSON=1`;
-let stadiumMap = {};
+let franchiseDatabase = {}; // or whatever name you’re using consistently
 
 fetch(leagueAPIUrl)
   .then(res => res.json())
@@ -69,57 +69,17 @@ fetch(leagueAPIUrl)
     const franchises = data.league.franchises.franchise;
 
     franchises.forEach(f => {
-      const fidKey = "fid_" + f.id;
-      stadiumMap[fidKey] = f.stadium || "";
+      franchiseDatabase["fid_" + f.id] = f;
     });
 
-    console.log("✅ Stadium map ready:", stadiumMap);
+    console.log("✅ Franchise database ready:", franchiseDatabase);
 
-    renderStadiumsInMatchups(); // run your insert logic here
+    // Optionally trigger your main rendering logic now
+    // e.g., buildMatchups(), updateUI(), etc.
   })
   .catch(err => {
     console.error("❌ Error fetching league data:", err);
   });
-
-function renderStadiumsInMatchups() {
-  document.querySelectorAll(".MFLGameTable.matchupLolite").forEach(table => {
-    const rows = table.querySelectorAll("tr");
-    const homeRow = rows[0];
-    const homeFidMatch = homeRow.className.match(/fid-(\d{4})/);
-    if (!homeFidMatch) return;
-
-    const homeFid = homeFidMatch[1];
-    const fidKey = "fid_" + homeFid;
-    const stadium = stadiumMap[fidKey];
-
-    console.log(`ℹ️ Inserting stadium for ${fidKey}: ${stadium}`);
-
-    // Remove any existing stadium row
-    const existing = table.querySelector(".MFLStadiumRow");
-    if (existing) existing.remove();
-
-    // Create new stadium row
-    const row = document.createElement("tr");
-    row.className = "MFLStadiumRow";
-
-    const td = document.createElement("td");
-    td.colSpan = 5;
-    td.className = "MFLLiveStadium";
-    td.style.textAlign = "center";
-    td.style.fontStyle = "italic";
-    td.textContent = stadium || "Stadium TBD";
-
-    row.appendChild(td);
-
-    // Insert above clock row if available
-    const clockRow = table.querySelector(".MFLLiveClock");
-    if (clockRow) {
-      table.tBodies[0].insertBefore(row, clockRow);
-    }
-  });
-}
-
-
 
 
     function doMFLBoxFantasyWeek()
@@ -1379,7 +1339,9 @@ function renderStadiumsInMatchups() {
                 a += '</tr>';
 
                 const fidKey = "fid_" + homeId;
-const teamData = franchiseDatabase[fidKey];
+                
+const teamData = franchiseDatabase["fid_" + homeId];
+
 
 console.log("Checking stadium for:", fidKey);
 console.log("franchiseDatabase entry:", teamData);
