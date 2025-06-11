@@ -1315,11 +1315,18 @@ else
                 }
                 a += '</tr>';
 
-                const homeStadium = franchiseDatabase["fid_" + homeId]?.stadium?.trim();
-                a += '<tr class="MFLStadiumRow"><td colspan="5" class="MFLLiveStadium" style="text-align:center; font-style:italic;">' +
-                     (homeStadium || 'Stadium TBD') +
-                     '</td></tr>';
+                const fidKey = "fid_" + homeId;
+const teamData = franchiseDatabase[fidKey];
 
+console.log("Checking stadium for:", fidKey);
+console.log("franchiseDatabase entry:", teamData);
+
+const homeStadium = teamData?.stadium?.trim();
+console.log("Resolved stadium:", homeStadium);
+
+a += '<tr class="MFLStadiumRow"><td colspan="5" class="MFLLiveStadium" style="text-align:center; font-style:italic;">' +
+     (homeStadium || 'Stadium TBD') +
+     '</td></tr>';
 
         
                 // Clock row with both IDs
