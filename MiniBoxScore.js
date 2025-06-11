@@ -59,6 +59,20 @@ else
         mflBoxNflGameStatus = new Array,
         ls_last_update_secs = 0;
 
+
+    let franchiseStadiums = {};
+
+        async function fetchStadiumData() {
+          const response = await fetch(`${baseURLDynamic}/${year}/export?TYPE=league&L=${league_id}&JSON=1`);
+          const data = await response.json();
+        
+          data.league.franchises.franchise.forEach(f => {
+            const fidKey = `fid_${f.id}`;
+            franchiseStadiums[fidKey] = f.stadium || "Home Stadium"; // fallback if undefined
+          });
+        }
+
+
     function doMFLBoxFantasyWeek()
     {
         if(mflBoxJSON_matchups = [], mflBoxActiveWeek === mflBoxCurrentWeek)
@@ -367,6 +381,7 @@ else
                     for(m = 0; m < mflBoxJSON_matchups.franchise[l].players.player.length; m++)
                     {
                         s = mflBoxJSON_matchups.franchise[l];
+                        
                         if("starter" === (c = mflBoxJSON_matchups.franchise[l].players.player[m]).status) f = "1";
                         else f = "0";
                         if(void 0 === mflBox_players["pid_" + c.id] ? (mflBox_players["pid_" + c.id] = {
@@ -1302,6 +1317,15 @@ else
                     a += '<tr class="MFLBoxPlayerDetailsTR fid-' + homeId + '" onclick="doMFLBoxPlayerDetails(\'' + homeId + '\',' + o + ')">';
                 } else {
                     a += '<tr class="fid-' + homeId + '">';
+
+                const fidKey = "fid_" + homeId;
+                    
+                const stadiumName = franchiseStadiums[fidKey] || ""; // fallback
+                
+                a += `<tr class="MFLBoxStadiumRow"><td colspan="5" class="home-stadium-name" style="font-style: italic; font-size: 0.75rem; text-align: center">${stadiumName}</td></tr>`;
+
+                    
+        
                 }
                 a += '<td class="MFLLiveTeam">' + getMFLBoxNameIcon(homeId) + "</td>";
                 a += '<td class="MFLPaceSpread" id="mflBoxSpread_' + homeId + '_' + o + '"></td>';
