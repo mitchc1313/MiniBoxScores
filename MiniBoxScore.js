@@ -59,29 +59,6 @@ else
         mflBoxNflGameStatus = new Array,
         ls_last_update_secs = 0;
 
-
-const leagueAPIUrl = `${baseURLDynamic}/${year}/export?TYPE=league&L=${league_id}&JSON=1`;
-let franchiseDatabase = {}; // or whatever name you’re using consistently
-
-fetch(leagueAPIUrl)
-  .then(res => res.json())
-  .then(data => {
-    const franchises = data.league.franchises.franchise;
-
-    franchises.forEach(f => {
-      franchiseDatabase["fid_" + f.id] = f;
-    });
-
-    console.log("✅ Franchise database ready:", franchiseDatabase);
-
-    // Optionally trigger your main rendering logic now
-    // e.g., buildMatchups(), updateUI(), etc.
-  })
-  .catch(err => {
-    console.error("❌ Error fetching league data:", err);
-  });
-
-
     function doMFLBoxFantasyWeek()
     {
         if(mflBoxJSON_matchups = [], mflBoxActiveWeek === mflBoxCurrentWeek)
@@ -1339,21 +1316,7 @@ fetch(leagueAPIUrl)
                 a += '</tr>';
 
                 const fidKey = "fid_" + homeId;
-                
-const teamData = franchiseDatabase["fid_" + homeId];
-
-
-console.log("Checking stadium for:", fidKey);
-console.log("franchiseDatabase entry:", teamData);
-
-const homeStadium = teamData?.stadium?.trim();
-console.log("Resolved stadium:", homeStadium);
-
-a += '<tr class="MFLStadiumRow"><td colspan="5" class="MFLLiveStadium" style="text-align:center; font-style:italic;">' +
-     (homeStadium || 'Stadium TBD') +
-     '</td></tr>';
-
-        
+                       
                 // Clock row with both IDs
                 a += "   <tr>";
                 a += '<td colspan="5" class="MFLLiveClock" style="position:relative" id="mflBoxClock_' + roadId + '_' + homeId + '"></td>';
