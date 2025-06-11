@@ -59,6 +59,69 @@ else
         mflBoxNflGameStatus = new Array,
         ls_last_update_secs = 0;
 
+
+const leagueAPIUrl = `${baseURLDynamic}/${year}/export?TYPE=league&L=${league_id}&JSON=1`;
+let stadiumMap = {};
+
+fetch(leagueAPIUrl)
+  .then(res => res.json())
+  .then(data => {
+    const franchises = data.league.franchises.franchise;
+
+    franchises.forEach(f => {
+      const fidKey = "fid_" + f.id;
+      stadiumMap[fidKey] = f.stadium || "";
+    });
+
+    console.log("✅ Stadium map ready:", stadiumMap);
+
+    renderStadiumsInMatchups(); // run your insert logic here
+  })
+  .catch(err => {
+    console.error("❌ Error fetching league data:", err);
+  });
+
+function renderStadiumsInMatchups() {
+  document.querySelectorAll(".MFLGameTable.matchupLolite").forEach(table => {
+    const rows = table.querySelectorAll("tr");
+    const homeRow = rows[0];
+    const homeFidMatch = homeRow.className.match(/fid-(\d{4})/);
+    if (!homeFidMatch) return;
+
+    const homeFid = homeFidMatch[1];
+    const fidKey = "fid_" + homeFid;
+    const stadium = stadiumMap[fidKey];
+
+    console.log(`ℹ️ Inserting stadium for ${fidKey}: ${stadium}`);
+
+    // Remove any existing stadium row
+    const existing = table.querySelector(".MFLStadiumRow");
+    if (existing) existing.remove();
+
+    // Create new stadium row
+    const row = document.createElement("tr");
+    row.className = "MFLStadiumRow";
+
+    const td = document.createElement("td");
+    td.colSpan = 5;
+    td.className = "MFLLiveStadium";
+    td.style.textAlign = "center";
+    td.style.fontStyle = "italic";
+    td.textContent = stadium || "Stadium TBD";
+
+    row.appendChild(td);
+
+    // Insert above clock row if available
+    const clockRow = table.querySelector(".MFLLiveClock");
+    if (clockRow) {
+      table.tBodies[0].insertBefore(row, clockRow);
+    }
+  });
+}
+
+
+
+
     function doMFLBoxFantasyWeek()
     {
         if(mflBoxJSON_matchups = [], mflBoxActiveWeek === mflBoxCurrentWeek)
