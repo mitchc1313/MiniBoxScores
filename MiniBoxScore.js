@@ -1330,12 +1330,13 @@ else
                 }
                 a += '</tr>';
 
-                const fidKey = "fid_" + homeId;
-                    
-                const stadiumName = franchiseStadiums[fidKey] || ""; // fallback
-                
-                a += `<tr class="MFLBoxStadiumRow"><td colspan="5" class="home-stadium-name" style="font-style: italic; font-size: 0.75rem; text-align: center">${stadiumName}</td></tr>`;
-                       
+                const fidKey = `fid_${homeFid}`; // Make sure homeFid is defined
+const homeStadium = franchiseStadiums[fidKey];
+
+a += `<tr class="MFLStadiumRow"><td colspan="5" class="MFLLiveStadium" style="text-align:center; font-style:italic;">${
+  homeStadium || 'Stadium TBD'
+}</td></tr>`;
+
                 // Clock row with both IDs
                 a += "   <tr>";
                 a += '<td colspan="5" class="MFLLiveClock" style="position:relative" id="mflBoxClock_' + roadId + '_' + homeId + '"></td>';
