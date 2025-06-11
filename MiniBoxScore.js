@@ -188,7 +188,13 @@ else
                 var a = "0",
                     o = "0",
                     t = "0";
-                reportStandingsFid_ar[e].hasOwnProperty("w") && (a = reportStandingsFid_ar[e].w), reportStandingsFid_ar[e].hasOwnProperty("l") && (o = reportStandingsFid_ar[e].l), reportStandingsFid_ar[e].hasOwnProperty("t") && (t = reportStandingsFid_ar[e].t), franchiseDatabase["fid_" + e].record = "(" + a + "-" + o + "-" + t + ")"
+                reportStandingsFid_ar[e].hasOwnProperty("w") && (a = reportStandingsFid_ar[e].w), 
+                reportStandingsFid_ar[e].hasOwnProperty("l") && (o = reportStandingsFid_ar[e].l), 
+                reportStandingsFid_ar[e].hasOwnProperty("t") && (t = reportStandingsFid_ar[e].t), 
+                franchiseDatabase["fid_" + e].record = t === "0" || t === 0
+    ? `(${a}-${o})`
+    : `(${a}-${o}-${t})`;
+
             } if(mflBoxJSON_matchups.hasOwnProperty("matchup"))
         {
             var r = new Array;
