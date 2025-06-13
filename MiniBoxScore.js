@@ -1314,6 +1314,10 @@ else
                     a += '<td class="MFLExtras MFLExtrasCP MFLExtras_' + roadId + '_' + homeId + '" id="mflBoxCP_' + homeId + '_' + o + '"></td>';
                 }
                 a += '</tr>';
+
+                const homeStadium = franchiseDatabase["fid_" + homeId]?.stadium || "";
+                a += '<tr class="MFLStadiumRow"><td colspan="5" class="MFLLiveStadium" style="text-align:center; font-style:italic;">' + homeStadium + '</td></tr>';
+
         
                 // Clock row with both IDs
                 a += "   <tr>";
