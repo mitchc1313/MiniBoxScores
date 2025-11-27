@@ -1,3 +1,6 @@
+const dbDebug = false;
+const dbDebugDetail = false;
+
 if(void 0 === mini_offseason_hide) var mini_offseason_hide = !1;
 if(void 0 === deactivate_all_offseason) var deactivate_all_offseason = !1;
 if(is_offseason && mini_offseason_hide || is_offseason && deactivate_all_offseason) $("#MFLBoxWrapper").parent(".mobile-wrap").remove(), $("#MFLBoxWrapper").remove(), console.log("Offseason - Mini Boxscores Script");
